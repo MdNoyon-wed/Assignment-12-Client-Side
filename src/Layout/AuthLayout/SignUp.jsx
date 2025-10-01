@@ -4,11 +4,12 @@ import useAuth from '../../Hook/useAuth'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { TbFidgetSpinner } from "react-icons/tb";
+import { imageUpload } from '../../AddClub/DashboardLayout/Host/api/utils'
 
 
 const SignUp = () => {
   const navigate = useNavigate()
-  const { createUser, updateUserProfile,  signInWithGoogle,loading, setLoading,} = useAuth()
+  const { createUser, user, updateUserProfile, signInWithGoogle, loading, setLoading, } = useAuth()
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -25,20 +26,19 @@ const SignUp = () => {
 
     try {
       setLoading(true)
+
       const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=c8ec8c34f9502e28927ee6c45a9fb81d`,
-        
-        // error aca
 
         formData)
-
-      // console.log(data.data.display_url)
-
+      // const image_url = await imageUpload(image)
+      
       // user signUp
       const result = await createUser(email, password)
       console.log(result)
 
+
       // user name and phato
-      await updateUserProfile(name,data)
+      await updateUserProfile(name, data)
 
       Swal.fire({
         title: "Sign Up Done!",
@@ -46,16 +46,16 @@ const SignUp = () => {
         draggable: true
       });
 
-      navigate('/')
+      
 
     } catch (err) {
-            Swal.fire({
+      Swal.fire({
         title: err,
         icon: "success",
         draggable: true
       });
       setLoading(false)
-  
+
     }
 
   }
@@ -65,14 +65,14 @@ const SignUp = () => {
     setLoading(true)
 
     try {
-      await  signInWithGoogle()
-           Swal.fire({
+      await signInWithGoogle()
+      Swal.fire({
         title: "Google SignIn Done",
         icon: "success",
         draggable: true
       });
       navigate('/')
-    } catch(err){
+    } catch (err) {
       console.log(err)
     }
 
@@ -156,11 +156,11 @@ const SignUp = () => {
 
           <div>
             <button
-           disabled={loading}
+              disabled={loading}
               type='submit'
               className='bg-rose-500 w-full rounded-md py-3 text-white'
             >
-             {loading? <TbFidgetSpinner className='animate-spin m-auto' />: 'Continue'}
+              {loading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Continue'}
             </button>
           </div>
         </form>
@@ -171,7 +171,7 @@ const SignUp = () => {
           </p>
           <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
         </div>
-        <button  disabled={loading} onClick={handleGoogleSignIn} className=' disabled:cursor-not-allowed flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
+        <button disabled={loading} onClick={handleGoogleSignIn} className=' disabled:cursor-not-allowed flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
           <FcGoogle size={32} />
 
           <p>Continue with Google</p>

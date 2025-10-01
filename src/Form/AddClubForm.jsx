@@ -1,25 +1,120 @@
-import CategoryBox from "../Category/CategoryBox"
-import Categories from "../Category/Categorys"
-
+import { useState } from "react";
  
-
+import { DateRange } from 'react-date-range';
+ import { IoMdFootball } from "react-icons/io";
+ import { BiFootball , BiHeart,BiSolidBadgeDollar, BiSolidHandLeft, BiRun,BiCool,BiMove, BiChair, } from "react-icons/bi";
  
+import { FaSkiing,FaFootballBall,FaChess } from 'react-icons/fa'
+import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { MdOutlineVilla,MdSportsCricket } from 'react-icons/md'
+
+import { GiCactus } from "react-icons/gi";
+import { imageUpload } from "../AddClub/DashboardLayout/Host/api/utils";
+
+const AddClubForm = ({dates,handleDates,handleSubmit,onSubmit,register}) => {
 
 
-const AddClubForm = () => {
+  // const [state, setState] = useState([
+  //   {
+  //     startDate: new Date(),
+  //     endDate: null,
+  //     key: 'selection2'
+  //   }
+  // ]);
+
+   const Categories = [
+     {
+       label: 'Football',
+       icon: IoMdFootball,
+       description: 'One Team, One Dream!',
+     },
+     {
+       label: 'Basketball',
+       icon: FaFootballBall ,
+       description: ' The Game, The Grind, The Glory!',
+     },
+     {
+       label: 'Cricket',
+       icon: MdSportsCricket,
+       description: 'I love Cricket!',
+     },
+     {
+       label: 'Dollar',
+       icon: BiSolidBadgeDollar,
+       description: 'This is Dollar!',
+     },
+     {
+       label: 'Football2',
+       icon: BiFootball,
+       description: 'This is property has a beautiful pool!',
+     },
+     {
+       label: 'Chair',
+       icon: BiChair,
+       description: 'This Chair!',
+     },
+     {
+       label: 'Cool-Bro',
+       icon:BiCool ,
+       description: 'This property is near a lake!',
+     },
+     {
+       label: 'Skiing',
+       icon: FaSkiing,
+       description: 'This property has skiing activities!',
+     },
+     {
+       label: 'Move',
+       icon: BiMove,
+       description: 'This property is an ancient castle!',
+     },
+     {
+       label: 'Caves',
+       icon: RiVerifiedBadgeFill ,
+       description: 'This property is in a spooky cave!',
+     },
+     {
+       label: 'Run',
+       icon: BiRun,
+       description: 'This property offers camping activities!',
+     },
+     {
+       label: 'Chess',
+       icon:FaChess ,
+       description: 'This property is in arctic environment!',
+     },
+     {
+       label: 'Desert',
+       icon: GiCactus,
+       description: 'This property is in the desert!',
+     },
+     {
+       label: 'Barns',
+       icon:BiHeart,
+       description: 'This property is in a barn!',
+     },
+     {
+       label: 'Hand',
+       icon: BiSolidHandLeft,
+       description: 'This property is brand new and luxurious!',
+     },]
+
+
+
   return (
     <div className='w-full min-h-[calc(100vh-40px)] flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50'>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
           <div className='space-y-6'>
+
             <div className='space-y-1 text-sm'>
               <label htmlFor='location' className='block text-gray-600'>
                 Location
               </label>
               <input
                 className='w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md '
-                name='location'
-                id='location'
+                {...register("location")}
+      
                 type='text'
                 placeholder='Location'
                 required
@@ -32,25 +127,36 @@ const AddClubForm = () => {
               </label>
               <select
                 required
-                className='w-full px-4 py-3 border-rose-300 focus:outline-rose-500 rounded-md'
-                name='category'
+                className="w-full px-4 py-3 border-rose-300 focus:outline-rose-500 rounded-md"
+                 {...register("category")}
               >
-                { CategoryBox.map(category => (
-                  
+                {Categories.map((category) => (
                   <option value={category.label} key={category.label}>
                     {category.label}
                   </option>
                 ))}
               </select>
-         
+
+
+
+
             </div>
-      
+
 
             <div className='space-y-1'>
               <label htmlFor='location' className='block text-gray-600'>
                 Select Availability Range
               </label>
               {/* Calender */}
+              <DateRange
+              
+                editableDateInputs={true}
+                onChange={item =>handleDates(item)}
+                moveRangeOnFirstSelection={false}
+                  // ranges={[dates.startDate,dates.endDate]}
+                  ranges={[dates]}
+                  
+              />
             </div>
           </div>
           <div className='space-y-6'>
@@ -60,8 +166,8 @@ const AddClubForm = () => {
               </label>
               <input
                 className='w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md '
-                name='title'
-                id='title'
+                 
+              {...register("title")}
                 type='text'
                 placeholder='Title'
                 required
@@ -94,9 +200,8 @@ const AddClubForm = () => {
                 </label>
                 <input
                   className='w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md '
-                  name='price'
-                  id='price'
-                  type='number'
+                   {...register("price")}
+                  type='text'
                   placeholder='Price'
                   required
                 />
@@ -108,8 +213,7 @@ const AddClubForm = () => {
                 </label>
                 <input
                   className='w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md '
-                  name='total_guest'
-                  id='guest'
+                  {...register("total_guest")}
                   type='number'
                   placeholder='Total guest'
                   required
@@ -124,8 +228,7 @@ const AddClubForm = () => {
                 </label>
                 <input
                   className='w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md '
-                  name='bedrooms'
-                  id='bedrooms'
+                  {...register("bedrooms")}
                   type='number'
                   placeholder='Bedrooms'
                   required
@@ -153,9 +256,10 @@ const AddClubForm = () => {
               </label>
 
               <textarea
-                id='description'
+                {...register("description")}
+                
                 className='block rounded-md focus:rose-300 w-full h-32 px-4 py-3 text-gray-800  border border-rose-300 focus:outline-rose-500 '
-                name='description'
+             
               ></textarea>
             </div>
           </div>

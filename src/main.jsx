@@ -44,7 +44,9 @@ const router = createBrowserRouter([
       },
       {
         path:'/clubDetails/:id',
-        element:<ClubDetails/>
+        element:<PivateRoute>
+          <ClubDetails/>
+        </PivateRoute>
       
         
       }

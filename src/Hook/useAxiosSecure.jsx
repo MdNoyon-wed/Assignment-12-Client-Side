@@ -4,7 +4,7 @@ import useAuth from './useAuth';
 import axios from 'axios';
 
 const axiosSecure = axios.create({
-  baseURL:"http://localhost:3000/clubs", 
+  baseURL:"http://localhost:3000/club", 
   withCredentials: true, 
 });
 

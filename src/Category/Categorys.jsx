@@ -23,7 +23,7 @@ import { MdOutlineVilla,MdSportsCricket } from 'react-icons/md'
 const Categories = () => {
 
 
- const categories = [
+ const Categories = [
    {
      label: 'Football',
      icon: IoMdFootball,
@@ -103,7 +103,7 @@ const Categories = () => {
     
    
       <div className='pt-4 flex items-center justify-between overflow-x-auto'>
-        {categories.map(item => (
+        {Categories.map(item => (
           <CategoryBox key={item.label} label={item.label} icon={item.icon} />
         ))}
       </div>
